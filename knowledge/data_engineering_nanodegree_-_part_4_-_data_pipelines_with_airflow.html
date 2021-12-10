@@ -1,0 +1,1029 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Resource collection and personal learning roadmap for Data Engineering">
+      
+      
+      
+        <link rel="canonical" href="https://pwenker.com/data-engineering/knowledge/data_engineering_nanodegree_-_part_4_-_data_pipelines_with_airflow.html">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.0">
+    
+    
+      
+        <title>Data Engineering Nanodegree - Part 4 - Data Pipelines With Airflow - Data Engineering</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.82f3c0b9.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.9204c3b2.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#data-engineering-nanodegree-part-4-data-pipelines-with-airflow" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="Data Engineering" class="md-header__button md-logo" aria-label="Data Engineering" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Data Engineering
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Data Engineering Nanodegree - Part 4 - Data Pipelines With Airflow
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/pwenker/data-engineering/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pwenker/data-engineering
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Data Engineering" class="md-nav__button md-logo" aria-label="Data Engineering" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Data Engineering
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/pwenker/data-engineering/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pwenker/data-engineering
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          Knowledge
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Knowledge" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Knowledge
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_engineering_nanodegree_-_part_1_-_data_modeling.html" class="md-nav__link">
+        Data Engineering Nanodegree - Part 1 - Data Modeling
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_engineering_nanodegree_-_part_2_-_cloud_data_warehouses.html" class="md-nav__link">
+        Data Engineering Nanodegree - Part 2 - Cloud Data Warehouses
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_engineering_nanodegree_-_part_3_-_data_lakes_with_spark.html" class="md-nav__link">
+        Data Engineering Nanodegree - Part 3 - Data Lakes with Spark
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Data Engineering Nanodegree - Part 4 - Data Pipelines With Airflow
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="data_engineering_nanodegree_-_part_4_-_data_pipelines_with_airflow.html" class="md-nav__link md-nav__link--active">
+        Data Engineering Nanodegree - Part 4 - Data Pipelines With Airflow
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#data-engineering" class="md-nav__link">
+    Data Engineering
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Engineering">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#data-pipelines-with-airflow" class="md-nav__link">
+    Data Pipelines With Airflow
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Pipelines With Airflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#module-1" class="md-nav__link">
+    Module 1
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 1">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#data-pipelines" class="md-nav__link">
+    Data Pipelines
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-2" class="md-nav__link">
+    Module 2
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#data-quality" class="md-nav__link">
+    Data Quality
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-3" class="md-nav__link">
+    Module 3
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 3">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#production-data-pipelines" class="md-nav__link">
+    Production Data Pipelines
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#acronyms" class="md-nav__link">
+    Acronyms
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#data-engineering" class="md-nav__link">
+    Data Engineering
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Engineering">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#data-pipelines-with-airflow" class="md-nav__link">
+    Data Pipelines With Airflow
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Pipelines With Airflow">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#module-1" class="md-nav__link">
+    Module 1
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 1">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#data-pipelines" class="md-nav__link">
+    Data Pipelines
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-2" class="md-nav__link">
+    Module 2
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 2">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#data-quality" class="md-nav__link">
+    Data Quality
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-3" class="md-nav__link">
+    Module 3
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 3">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#production-data-pipelines" class="md-nav__link">
+    Production Data Pipelines
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#acronyms" class="md-nav__link">
+    Acronyms
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+<a href="https://github.com/pwenker/data-engineering/edit/master/docs/knowledge/data_engineering_nanodegree_-_part_4_-_data_pipelines_with_airflow.md" title="Edit this page" class="md-content__button md-icon">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+</a>
+
+
+<h1 id="data-engineering-nanodegree-part-4-data-pipelines-with-airflow">Data Engineering Nanodegree - Part 4 - Data Pipelines With Airflow<a class="headerlink" href="#data-engineering-nanodegree-part-4-data-pipelines-with-airflow" title="Permanent link">&para;</a></h1>
+<h2 id="data-engineering">Data Engineering<a class="headerlink" href="#data-engineering" title="Permanent link">&para;</a></h2>
+<h3 id="data-pipelines-with-airflow">Data Pipelines With Airflow<a class="headerlink" href="#data-pipelines-with-airflow" title="Permanent link">&para;</a></h3>
+<h4 id="module-1">Module 1<a class="headerlink" href="#module-1" title="Permanent link">&para;</a></h4>
+<h5 id="data-pipelines">Data Pipelines<a class="headerlink" href="#data-pipelines" title="Permanent link">&para;</a></h5>
+<p><details><summary>Q: What is a <b>data pipeline</b>?</summary><b>Answer</b>: A series of steps in which data is processed.
+
+<b><i>Example</i></b>: <ul><li>Automated marketing emails</li><li>Real-time pricing in rideshare apps</li><li>Targeted advertising based on browsing history</li></ul>
+
+<b><i>Remarks</i></b>: It's typically using either ETL or ELT.
+
+</details></p>
+
+<p><details><summary>Q: Given an example of a data pipeline to accomplish the following: <i>a bikeshare company wants to efficiently improve availability of bikes.</i></summary><b>Answer</b>: <ol><li>Load application event data from a source such as S3 or Kafka</li><li>Load the data into an analytic warehouse such as RedShift.</li><li>Perform data transformations that identify high-traffic bike docks so the business can determine where to build additional locations.</li></ol>
+
+</details></p>
+
+<p><details><summary>Q: Describe the difference between ETL and ELT.</summary><b>Answer</b>: <div><ul><li>ETL is normally a continuous, ongoing process with a well-defined 
+workflow. ETL first extracts data from homogeneous or heterogeneous data
+ sources. Then, data is cleansed, enriched, transformed, and stored 
+either back in the lake or in a data warehouse.</li><li>ELT (Extract, Load, Transform) is a variant of ETL wherein the 
+extracted data is first loaded into the target system. Transformations 
+are performed after the data is loaded into the data warehouse.</li></ul></div>
+
+<b><i>Remarks</i></b>: <em>ELT typically works well when the target system is powerful enough to handle transformations. Analytical databases like Amazon Redshift and Google BigQ.</em>
+
+</details></p>
+
+<p><details><summary>Q: What is <b>S3</b>?</summary><b>Answer</b>: <ul><li>Amazon S3 has a simple web services interface that you can use to 
+store and retrieve any amount of data, at any time, from anywhere on the
+ web.&nbsp;</li><li>It gives any developer access to the same highly scalable, 
+reliable, fast, inexpensive data storage infrastructure that Amazon uses
+ to run its own global network of web sites.</li></ul>
+
+<b><i>Remarks</i></b>: <div><ul><li><em>Source:</em>&nbsp;<a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/Welcome.html">Amazon Web Services Documentation</a>.</li><li>If you want to learn more, start&nbsp;<a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/Welcome.html">here</a>.</li></ul></div>
+
+</details></p>
+
+<p><details><summary>Q: What is <b>Kafka</b>?</summary><b>Answer</b>: <ul><li>Apache Kafka is an <strong>open-source stream-processing software platform&nbsp;</strong>developed by Linkedin and donated to the Apache Software Foundation, written in Scala and Java.&nbsp;</li><li>The project aims to provide a unified, high-throughput, low-latency platform for handling real-time data feeds.</li></ul>
+
+<b><i>Remarks</i></b>: <ul><li>Its storage layer is essentially a massively scalable pub/sub message queue designed as a distributed transaction log, making it highly valuable for enterprise infrastructures to process streaming data."</li><li><div><em>Source:</em>&nbsp;<em>Wikipedia</em><br></div></li><li><div>If you want to learn more, start&nbsp;<a href="https://kafka.apache.org/intro">here</a>.</div></li></ul>
+
+</details></p>
+
+<p><details><summary>Q: What is <b>RedShift</b>?</summary><b>Answer</b>: Amazon Redshift is a fully managed, petabyte-scale data warehouse 
+service in the cloud.
+
+<b><i>Remarks</i></b>: <ul><li>The first step to create a data warehouse is to launch a set of nodes, called an Amazon Redshift cluster.&nbsp;</li><li>After you provision your cluster, you can upload your data set and then perform data analysis queries.</li><li>Regardless of the size of the data set, Amazon Redshift offers fast query performance using the same SQL-based tools and business intelligence applications that you use today.</li><li>If you want to learn more, start&nbsp;<a href="https://docs.aws.amazon.com/redshift/latest/mgmt/welcome.html">here</a>.</li></ul>
+
+</details></p>
+
+<p><details><summary>Q: What is <b>data validation</b>?</summary><b>Answer</b>: It is the process of ensuring that data is present, correct
+ &amp; meaningful.
+
+<b><i>Remarks</i></b>: Ensuring the quality of your data through automated validation checks is a critical step in building data pipelines at any organization.
+
+</details></p>
+
+<p><details><summary>Q: List some data validation steps for the bikeshare example.</summary><b>Answer</b>: After loading from S3 to Redshift:<br><ul><li>Validate the number of rows in Redshift match the number of records in S3</li></ul>Once location business analysis is complete:<br><ul><li>Validate that all locations have a daily visit average greater than 0</li><li>Validate that the number of locations in our output table match the number of tables in the input table.</li></ul>
+
+</details></p>
+
+<p><details><summary>Q: Are there real world cases where a data pipeline is not a DAG?</summary><b>Answer</b>: <ul><li>It is possible to model a data pipeline that is not a DAG, meaning that 
+it contains a cycle within the process.&nbsp;</li><li>However, the vast majority of 
+use cases for data pipelines can be described as a directed acyclic 
+graph (DAG).&nbsp;</li><li>This makes the code more understandable and maintainable.</li></ul>
+
+</details></p>
+
+<p><details><summary>Q: Can we have two different pipelines for the same data and can we merge them back together?</summary><b>Answer</b>: Yes. It's not uncommon for a data pipeline to take the same dataset, <br>perform two different processes to analyze it, then merge the <br>results of those two processes back together.
+
+</details></p>
+
+<p><details><summary>Q: How could the bikeshare example be modeled as a DAG?</summary><b>Answer</b>: <img src="images/paste-c52e73a8ebef5e7f0c201115f21043b7a0b6f0f9.jpg">
+
+</details></p>
+
+<p><details><summary>Q: What are the<b> five components</b> of <b>airflow</b>?</summary><b>Answer</b>: <ol><li>The <b>s</b><strong>cheduler</strong> orchestrates the execution of jobs on a 
+trigger or schedule. It chooses how to prioritize the running
+ and execution of tasks within the system.</li>
+<li>The<strong>&nbsp;work queue</strong> is used by the scheduler in most Airflow installations to deliver tasks that need to be run to the workers. </li>
+<li><strong>Worker</strong> processes execute the operations defined in each DAG. In most Airflow installations, workers pull from the work queue
+ when it is ready to process a task. When the worker completes the 
+execution of the task, it will attempt to process more work from the work queue until there is no further work remaining.</li>
+<li><strong>Database</strong> saves credentials, connections, history, and configuration. The database, often referred to as the <em>metadata database</em>, also stores the state of all tasks in the system.&nbsp;</li>
+<li>The<strong> web Interface</strong> provides a control dashboard for 
+users and maintainers. Throughout this course you will see how the web 
+interface allows users to perform tasks such as stopping and starting 
+DAGs, retrying failed tasks, configuring credentials,</li></ol>
+
+<b><i>Example</i></b>: <img src="images/airflow-diagram.png">
+
+</details></p>
+
+<p><details><summary>Q: Describe the order of operations for an <b>Airflow </b>DAG.</summary><b>Answer</b>: <ul>
+<li>The <b>scheduler </b>starts DAGs based on time or external triggers.</li>
+<li>Once a DAG is started, the scheduler looks at the steps within the 
+DAG and determines which steps can run by looking at their dependencies.</li>
+<li>The scheduler places runnable steps in the queue.</li>
+<li>Workers pick up those tasks and run them. </li>
+<li>Once the worker has finished running the step, the final status of 
+the task is recorded and additional tasks are placed by the scheduler 
+until all tasks are complete.</li>
+<li>Once all tasks have been completed, the DAG is complete.&nbsp;</li></ul>
+
+<b><i>Example</i></b>: <img src="images/how-airflow-works.png">
+
+</details></p>
+
+<p><details><summary>Q: What does the airflow<b> scheduler </b>do?</summary><b>Answer</b>: It starts DAGs based on triggers or schedules and moves them towards completion.
+
+</details></p>
+
+<p><details><summary>Q: What do the Airflow workers do?</summary><b>Answer</b>: They run and record the outcome of individual pipeline tasks.
+
+</details></p>
+
+<p><details><summary>Q: How to create a DAG in Airflow?</summary><b>Answer</b>: Creating a DAG is easy.&nbsp;<br><ol><li>Give it a <b>name</b>,</li><li>a <b>description</b>,</li><li>a <b>start date</b>, and an</li><li><b>interval</b>.</li></ol>
+
+<b><i>Example</i></b>: <img src="images/paste-ddab1f954062c02890fe1277d16985fccd33f441.jpg">
+
+</details></p>
+
+<p><details><summary>Q: What are <b>operators</b> in Airflow?</summary><b>Answer</b>: They define the atomic steps of work that make up a DAG.
+
+<b><i>Example</i></b>: <img src="images/paste-27b98b19981192af03e7fbb357f39ac9f64bf062.jpg">
+
+<b><i>Remarks</i></b>: Instantiated operators are referred to as <strong>Tasks</strong>.
+
+</details></p>
+
+<p><details><summary>Q: What does Airflow do when the start date is in the past?</summary><b>Answer</b>: Airflow will run your DAG as many times as there are schedule intervals between that start date and the current date.
+
+</details></p>
+
+<p><details><summary>Q: What are the <b>nodes</b> and <b>edges</b> in an Airflow DAG?</summary><b>Answer</b>: <ul>
+<li>Nodes = Tasks</li>
+<li>Edges = Ordering and dependencies between tasks</li></ul>
+
+<b><i>Remarks</i></b>: <div>Task dependencies can be described programmatically in Airflow using <code>&gt;&gt;</code> and <code>&lt;&lt;</code></div>
+<ul>
+<li>a <code>&gt;&gt;</code> b means a comes before b</li>
+<li>a <code>&lt;&lt;</code> b means a comes after b</li></ul>
+
+</details></p>
+
+<p><details><summary>Q: How to programmatically describe task dependencies in Airflow?</summary><b>Answer</b>: <div>Task dependencies can be described programmatically in Airflow using <code>&gt;&gt;</code> and <code>&lt;&lt;</code></div>
+<ul>
+<li>a <code>&gt;&gt;</code> b means a comes before b</li>
+<li>a <code>&lt;&lt;</code> b means a comes after b</li></ul>
+
+<b><i>Example</i></b>: ```<br>hello_world_task = PythonOperator(task_id=’hello_world’, ...)<br>goodbye_world_task = PythonOperator(task_id=’goodbye_world’, ...)<br>```<br><br>Use `&gt;&gt;` to denote that `goodbye_world_task` depends on `hello_world_task`<br>```hello_world_task &gt;&gt; goodbye_world_task```
+
+</details></p>
+
+<p><details><summary>Q: What are Airflow Hooks?</summary><b>Answer</b>: Hooks provide a reusable interface to external systems and databases.
+
+<b><i>Example</i></b>: <img src="images/paste-053232471eaebb68706f04962d60b8c9f626f6ef.jpg">
+
+<b><i>Remarks</i></b>: With hooks, you don’t have to worry about how and where to store these connection strings and secrets in your code.
+
+</details></p>
+
+<p><details><summary>Q: What's the purpose of <b>runtime variables</b> in Airflow?</summary><b>Answer</b>: They allow users to “fill in the blank” with important runtime variables for tasks.
+
+<b><i>Example</i></b>: <img src="images/paste-ec56c25dcd6afbb1f30ecc225a3eda614ee1c871.jpg">
+
+<b><i>Remarks</i></b>: <a href="https://airflow.apache.org/docs/apache-airflow/stable/macros-ref.html">Here</a> is the Apache Airflow documentation on <strong>context variables</strong> that can be included as kwargs.
+
+</details></p>
+
+<p><details><summary>Q: What is a Task in Airflow?</summary><b>Answer</b>: An instantiated step in a pipeline fully parameterized for execution.
+
+</details></p>
+
+<h4 id="module-2">Module 2<a class="headerlink" href="#module-2" title="Permanent link">&para;</a></h4>
+<h5 id="data-quality">Data Quality<a class="headerlink" href="#data-quality" title="Permanent link">&para;</a></h5>
+<p><details><summary>Q: What is <b>data lineage</b>?</summary><b>Answer</b>: The data lineage of a dataset describes the discrete steps involved in the creation, movement, and calculation of that dataset.
+
+</details></p>
+
+<p><details><summary>Q: Why is <b>data lineage</b> important?</summary><b>Answer</b>: <ol>
+<li><strong>Instilling Confidence:</strong> Being able to describe the 
+data lineage of a particular dataset or analysis will build confidence 
+in data consumers (engineers, analysts, data scientists, etc.) that our 
+data pipeline is creating meaningful results using the correct datasets.</li>
+<li><strong>Defining Metrics:</strong> Another major benefit of 
+surfacing data lineage is that it allows everyone in the organization to
+ agree on the definition of how a particular metric is calculated.</li>
+<li><strong>Debugging:</strong> Data lineage helps data engineers track 
+down the root of errors when they occur. If each step of the data 
+movement and transformation process is well described, it's easy to find
+ problems when they occur.</li></ol>
+
+<b><i>Remarks</i></b>: <ul><li>In general, data lineage has important implications for a business.&nbsp;</li><li>Each
+ department or business unit's success is tied to data and to the flow 
+of data between departments.&nbsp;</li><li>For e.g., sales departments rely on data to
+ make sales forecasts, while at the same time the finance department 
+would need to track sales and revenue.&nbsp;</li><li>Each of these departments and 
+roles depend on data, and knowing where to find the data.&nbsp;</li><li>Data flow and 
+data lineage tools enable data engineers and architects to track the 
+flow of this large web of data.</li></ul>
+
+</details></p>
+
+<p><details><summary>Q: Why use <b>schedules</b> in airflow?</summary><b>Answer</b>: <ol><li>Pipeline schedules can <b>reduce the amount of data</b> that needs to be processed in a given run. It helps scope the job to only run the data for the time period since the data pipeline last ran.</li><li>Using schedules to <b>select only data relevant</b> to the time period of the given pipeline execution can help improve the quality and accuracy of the analyses performed by our pipeline.</li><li>Running pipelines on a schedule will<b> decrease the time it takes</b> the pipeline to run.</li><li>An analysis of larger scope can <b>leverage already-completed work</b>. For example, if the aggregates for all months prior to now have already been done by a scheduled job, then we only need to perform the <br>aggregation for the current month and add it to the existing totals.</li></ol>
+
+</details></p>
+
+<p><details><summary>Q: Which factors should be considered in selecting a time period for scheduling?</summary><b>Answer</b>: <ol><br><li><div><strong>What is the size of data, on average, for a time period?</strong><br> If an entire years worth of data is only a few kb or mb, then perhaps <br>its fine to load the entire dataset. If an hours worth of data is <br>hundreds of mb or even in the gbs then likely you will need to schedule <br>your pipeline more frequently.</div><br></li><br><li><div><strong>How frequently is data arriving, and how often does the analysis need to be performed?</strong><br> If our bikeshare company needs trip data every hour, that will be a <br>driving factor in determining the schedule. Alternatively, if we have to<br> load hundreds of thousands of tiny records, even if they don't add up <br>to much in terms of mb or gb, the file access alone will slow down our <br>analysis and we’ll likely want to run it more often.</div><br></li><br><li><div><strong>What's the frequency on related datasets?</strong> A good<br> rule of thumb is that the frequency of a pipeline’s schedule should be <br>determined by the dataset in our pipeline which requires the most <br>frequent analysis. This isn’t universally the case, but it's a good <br>starting assumption. For example, if our trips data is updating every <br>hour, but our bikeshare station table only updates once a quarter, we’ll<br> probably want to run our trip analysis every hour, and not once a <br>quarter.</div><br></li></ol>
+
+</details></p>
+
+<p><details><summary>Q: What is the <b>scope</b> of a data pipeline?</summary><b>Answer</b>: It is the time delta between the current execution time and the end time of the last execution.
+
+</details></p>
+
+<p><details><summary>Q: What is <b>data partitioning</b>?</summary><b>Answer</b>: It is the process of isolating data to be analyzed by one or more attributes, such as time, logical type, or data size.
+
+<b><i>Remarks</i></b>: It often leads to faster and more reliable pipelines.
+
+</details></p>
+
+<p><details><summary>Q: Why should you use <b>data partitioning</b>?</summary><b>Answer</b>: <div><ul><li>Pipelines designed to work with partitioned data <b>fail more 
+gracefully</b>.&nbsp;</li><li>Smaller datasets, smaller time periods, and related concepts
+ are<b> easier to debug </b>than big datasets, large time periods, and 
+unrelated concepts.&nbsp;</li><li>Partitioning makes <b>rerunning failed 
+tasks much simpler</b>. It also enables easier redos of work, reducing cost 
+and time.</li></ul></div>
+
+<b><i>Remarks</i></b>: <ul><li>Another great thing about Airflow is that if your data is partitioned appropriately, your tasks will naturally have fewer dependencies on each other.&nbsp;</li><li>Because of this, Airflow will be able to parallelize execution of your DAGs to produce your results even faster.</li></ul>
+
+</details></p>
+
+<p><details><summary>Q: What are four common types of data partitioning?</summary><b>Answer</b>: <ol><li>Location</li><li>Logical</li><li>Size</li><li>Time</li></ol>
+
+</details></p>
+
+<p><details><summary>Q: What is <b>logical partitioning</b>?</summary><b>Answer</b>: The process of breaking conceptually related data into discrete groups for processing.
+
+</details></p>
+
+<p><details><summary>Q: What is <b>time partitioning</b>?</summary><b>Answer</b>: It is the process of processing data based on a schedule or when it was created.
+
+</details></p>
+
+<p><details><summary>Q: What is <b>size partitioning</b>?</summary><b>Answer</b>: It is the process of separating data for processing based on desired or required storage limits.
+
+</details></p>
+
+<p><details><summary>Q: How would you set a requirement for ensuring that data arrives within a certain timeframe of a DAG starting?</summary><b>Answer</b>: Using a service level agreement (SLA).
+
+</details></p>
+
+<h4 id="module-3">Module 3<a class="headerlink" href="#module-3" title="Permanent link">&para;</a></h4>
+<h5 id="production-data-pipelines">Production Data Pipelines<a class="headerlink" href="#production-data-pipelines" title="Permanent link">&para;</a></h5>
+<p><details><summary>Q: What are the most common types of user-created plugins?</summary><b>Answer</b>: Operators and Hooks.
+
+</details></p>
+
+<p><details><summary>Q: How to create a custom operator?</summary><b>Answer</b>: <ol>
+<li>Identify Operators that perform similar functions and can be consolidated</li>
+<li>Define a new Operator in the plugins folder</li>
+<li>Replace the original Operators with your new custom one, re-parameterize, and instantiate them.</li></ol>
+
+</details></p>
+
+<p><details><summary>Q: What is <b>Airflow contrib</b> and why is it useful?</summary><b>Answer</b>: <div><ul><li>It contains Operators and hooks for common data tools like Apache Spark and 
+Cassandra, as well as vendor specific integrations for Amazon Web 
+Services, Azure, and Google Cloud Platform can be found in Airflow 
+contrib. </li><li>Therefore you should always check it before building your own airflow plugins to see if what you need already exists.</li></ul></div>
+
+<b><i>Remarks</i></b>: If the functionality exists and its not quite what you want, that’s a great opportunity to add that functionality through an open source contribution.
+
+</details></p>
+
+<p><details><summary>Q: Which three rules should you follow when designing DAGs?</summary><b>Answer</b>: <div>DAG tasks should be designed such that they:</div><br><ol><li>are Atomic and have a single purpose</li><br><li>Maximize parallelism</li><br><li>Make failure states obvious</li></ol>
+
+<b><i>Remarks</i></b>: <div>Every task in your dag should perform <strong>only one job.</strong></div><br><blockquote><br><div>“Write programs that do one thing and do it well.” - Ken Thompson’s Unix Philosophy</div></blockquote>
+
+</details></p>
+
+<p><details><summary>Q: What are the benefits of <b>task boundaries</b>?</summary><b>Answer</b>: <ul>
+<li><b>Re-visitable:</b> Task boundaries are useful for you if you revisit a 
+pipeline you wrote after a 6 month absence. You'll have a much easier 
+time understanding how it works and the lineage of the data if the 
+boundaries between tasks are clear and well defined. This is true in the
+ code itself, and within the Airflow UI.</li>
+<li>Tasks that do just one thing are often <b>more easily parallelized</b>. 
+This parallelization can offer a significant speedup in the execution of
+ our DAGs.</li></ul>
+
+</details></p>
+
+<p><details><summary>Q: What are benefits of <b>SubDAGs</b>?</summary><b>Answer</b>: <ul>
+<li>Decrease the amount of code we need to write and maintain to create a new DAG</li>
+<li>Easier to understand the high level goals of a DAG</li>
+<li>Bug fixes, speedups, and other enhancements can be made more quickly and distributed to all DAGs that use that SubDAG</li></ul>
+
+</details></p>
+
+<p><details><summary>Q: What are drawbacks of using SubDAGs?</summary><b>Answer</b>: <ul>
+<li>Limit the visibility within the Airflow UI</li>
+<li>Abstraction makes understanding what the DAG is doing more difficult</li>
+<li>Encourages premature optimization</li></ul>
+
+</details></p>
+
+<p><details><summary>Q: Which pipeline monitoring options does airflow provide?</summary><b>Answer</b>: <ol><li>SLAs</li><li>Emails and alerts</li><li>Metrics</li></ol>
+
+</details></p>
+
+<p><details><summary>Q: What's the purpose of SLAs in airflow?</summary><b>Answer</b>: <ul><li>SLAs define the<strong>&nbsp;time by which a DAG must complete.</strong></li><li>
+ For time-sensitive applications they are critical for 
+developing trust amongst your pipeline customers and ensuring that data 
+is delivered while it is still meaningful.&nbsp;</li><li>Slipping SLAs can also be <strong>early indicators of performance problems</strong>, or a need to scale up the size of your Airflow cluster</li></ul>
+
+</details></p>
+
+<h2 id="acronyms">Acronyms<a class="headerlink" href="#acronyms" title="Permanent link">&para;</a></h2>
+<p><abbr title="Service Level Agreement">SLA</abbr>: Service Level Agreement <a href="https://en.wikipedia.org/wiki/Service-level_agreement"><img border="0" alt="Wiki link" src="images/Black_W_for_promotion.png" width="30" height="30"></a></p>
+<p><abbr title="Directed Acyclic Graph">DAG</abbr>: Directed Acyclic Graph <a href="https://en.wikipedia.org/wiki/Directed_acyclic_graph"><img border="0" alt="Wiki link" src="images/Black_W_for_promotion.png" width="30" height="30"></a></p>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="data_engineering_nanodegree_-_part_3_-_data_lakes_with_spark.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Data Engineering Nanodegree - Part 3 - Data Lakes with Spark" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Data Engineering Nanodegree - Part 3 - Data Lakes with Spark
+            </div>
+          </div>
+        </a>
+      
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+      
+      
+    
+    <a href="https://www.github.com/pwenker" target="_blank" rel="noopener" title="www.github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+    
+    
+      
+      
+    
+    <a href="https://www.twitter.com/PascalWenker" target="_blank" rel="noopener" title="www.twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+    </a>
+  
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/pascal-wenker/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+    </a>
+  
+    
+    
+      
+      
+    
+    <a href="https://www.youtube.com/channel/UCYxDcdFLW-AMoHEfh7pG-oA" target="_blank" rel="noopener" title="www.youtube.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.cefbb252.min.js"}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.17f42bbf.min.js"></script>
+      
+    
+  </body>
+</html>

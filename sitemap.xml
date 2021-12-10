@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://pwenker.com/data-engineering/index.html</loc>
+         <lastmod>2021-12-10</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://pwenker.com/data-engineering/knowledge/index.html</loc>
+         <lastmod>2021-12-10</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://pwenker.com/data-engineering/knowledge/data_engineering_nanodegree_-_part_1_-_data_modeling.html</loc>
+         <lastmod>2021-12-10</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://pwenker.com/data-engineering/knowledge/data_engineering_nanodegree_-_part_2_-_cloud_data_warehouses.html</loc>
+         <lastmod>2021-12-10</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://pwenker.com/data-engineering/knowledge/data_engineering_nanodegree_-_part_3_-_data_lakes_with_spark.html</loc>
+         <lastmod>2021-12-10</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://pwenker.com/data-engineering/knowledge/data_engineering_nanodegree_-_part_4_-_data_pipelines_with_airflow.html</loc>
+         <lastmod>2021-12-10</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+</urlset>

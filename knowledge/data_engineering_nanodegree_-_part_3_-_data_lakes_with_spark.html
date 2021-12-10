@@ -1,0 +1,919 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Resource collection and personal learning roadmap for Data Engineering">
+      
+      
+      
+        <link rel="canonical" href="https://pwenker.com/data-engineering/knowledge/data_engineering_nanodegree_-_part_3_-_data_lakes_with_spark.html">
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.0">
+    
+    
+      
+        <title>Data Engineering Nanodegree - Part 3 - Data Lakes with Spark - Data Engineering</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.82f3c0b9.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.9204c3b2.min.css">
+        
+      
+    
+    
+    
+      
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#data-engineering-nanodegree-part-3-data-lakes-with-spark" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="Data Engineering" class="md-header__button md-logo" aria-label="Data Engineering" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Data Engineering
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Data Engineering Nanodegree - Part 3 - Data Lakes with Spark
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_1">
+          
+            <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_2" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6zm0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4zM7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+            </label>
+          
+        
+          
+          
+          <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent=""  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_2">
+          
+            <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_1" hidden>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3z"/></svg>
+            </label>
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/pwenker/data-engineering/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pwenker/data-engineering
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="Data Engineering" class="md-nav__button md-logo" aria-label="Data Engineering" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
+
+    </a>
+    Data Engineering
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/pwenker/data-engineering/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 512"><path d="M186.1 328.7c0 20.9-10.9 55.1-36.7 55.1s-36.7-34.2-36.7-55.1 10.9-55.1 36.7-55.1 36.7 34.2 36.7 55.1zM480 278.2c0 31.9-3.2 65.7-17.5 95-37.9 76.6-142.1 74.8-216.7 74.8-75.8 0-186.2 2.7-225.6-74.8-14.6-29-20.2-63.1-20.2-95 0-41.9 13.9-81.5 41.5-113.6-5.2-15.8-7.7-32.4-7.7-48.8 0-21.5 4.9-32.3 14.6-51.8 45.3 0 74.3 9 108.8 36 29-6.9 58.8-10 88.7-10 27 0 54.2 2.9 80.4 9.2 34-26.7 63-35.2 107.8-35.2 9.8 19.5 14.6 30.3 14.6 51.8 0 16.4-2.6 32.7-7.7 48.2 27.5 32.4 39 72.3 39 114.2zm-64.3 50.5c0-43.9-26.7-82.6-73.5-82.6-18.9 0-37 3.4-56 6-14.9 2.3-29.8 3.2-45.1 3.2-15.2 0-30.1-.9-45.1-3.2-18.7-2.6-37-6-56-6-46.8 0-73.5 38.7-73.5 82.6 0 87.8 80.4 101.3 150.4 101.3h48.2c70.3 0 150.6-13.4 150.6-101.3zm-82.6-55.1c-25.8 0-36.7 34.2-36.7 55.1s10.9 55.1 36.7 55.1 36.7-34.2 36.7-55.1-10.9-55.1-36.7-55.1z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pwenker/data-engineering
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          Knowledge
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Knowledge" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          Knowledge
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        Index
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_engineering_nanodegree_-_part_1_-_data_modeling.html" class="md-nav__link">
+        Data Engineering Nanodegree - Part 1 - Data Modeling
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_engineering_nanodegree_-_part_2_-_cloud_data_warehouses.html" class="md-nav__link">
+        Data Engineering Nanodegree - Part 2 - Cloud Data Warehouses
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Data Engineering Nanodegree - Part 3 - Data Lakes with Spark
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="data_engineering_nanodegree_-_part_3_-_data_lakes_with_spark.html" class="md-nav__link md-nav__link--active">
+        Data Engineering Nanodegree - Part 3 - Data Lakes with Spark
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#data-engineering" class="md-nav__link">
+    Data Engineering
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Engineering">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#data-lakes-with-spark" class="md-nav__link">
+    Data Lakes With Spark
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Lakes With Spark">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#module-4" class="md-nav__link">
+    Module 4
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 4">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#data-wrangling-with-spark" class="md-nav__link">
+    Data Wrangling With Spark
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-power-of-spark" class="md-nav__link">
+    The Power Of Spark
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-5" class="md-nav__link">
+    Module 5
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 5">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#introduction-to-data-lakes" class="md-nav__link">
+    Introduction To Data Lakes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#acronyms" class="md-nav__link">
+    Acronyms
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="data_engineering_nanodegree_-_part_4_-_data_pipelines_with_airflow.html" class="md-nav__link">
+        Data Engineering Nanodegree - Part 4 - Data Pipelines With Airflow
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#data-engineering" class="md-nav__link">
+    Data Engineering
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Engineering">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#data-lakes-with-spark" class="md-nav__link">
+    Data Lakes With Spark
+  </a>
+  
+    <nav class="md-nav" aria-label="Data Lakes With Spark">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#module-4" class="md-nav__link">
+    Module 4
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 4">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#data-wrangling-with-spark" class="md-nav__link">
+    Data Wrangling With Spark
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#the-power-of-spark" class="md-nav__link">
+    The Power Of Spark
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#module-5" class="md-nav__link">
+    Module 5
+  </a>
+  
+    <nav class="md-nav" aria-label="Module 5">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#introduction-to-data-lakes" class="md-nav__link">
+    Introduction To Data Lakes
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#acronyms" class="md-nav__link">
+    Acronyms
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+<a href="https://github.com/pwenker/data-engineering/edit/master/docs/knowledge/data_engineering_nanodegree_-_part_3_-_data_lakes_with_spark.md" title="Edit this page" class="md-content__button md-icon">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+</a>
+
+
+<h1 id="data-engineering-nanodegree-part-3-data-lakes-with-spark">Data Engineering Nanodegree - Part 3 - Data Lakes with Spark<a class="headerlink" href="#data-engineering-nanodegree-part-3-data-lakes-with-spark" title="Permanent link">&para;</a></h1>
+<h2 id="data-engineering">Data Engineering<a class="headerlink" href="#data-engineering" title="Permanent link">&para;</a></h2>
+<h3 id="data-lakes-with-spark">Data Lakes With Spark<a class="headerlink" href="#data-lakes-with-spark" title="Permanent link">&para;</a></h3>
+<h4 id="module-4">Module 4<a class="headerlink" href="#module-4" title="Permanent link">&para;</a></h4>
+<h5 id="data-wrangling-with-spark">Data Wrangling With Spark<a class="headerlink" href="#data-wrangling-with-spark" title="Permanent link">&para;</a></h5>
+<p><details><summary>Q: In which language is Spark written?</summary><b>Answer</b>: Scala
+
+</details></p>
+
+<p><details><summary>Q: How is it possible that Spark programs can be written in Python if Python is not a functional programming language?</summary><b>Answer</b>: <ul><li>The PySpark API allows you to write programs in <br>Spark and ensures that your code uses functional programming practices.&nbsp;</li><li>&nbsp;Underneath the hood, the Python code uses py4j to make calls to the Java<br> Virtual Machine (JVM).</li></ul>
+
+</details></p>
+
+<p><details><summary>Q: What are <b>resilient distributed datasets </b>(<b>RDD</b>'s)?</summary><b>Answer</b>: <ul><li>RDDs are exactly what they say they are: fault-tolerant datasets distributed across a cluster. </li><li>This is how Spark stores data.</li></ul>
+
+</details></p>
+
+<h5 id="the-power-of-spark">The Power Of Spark<a class="headerlink" href="#the-power-of-spark" title="Permanent link">&para;</a></h5>
+<p><details><summary>Q: What's the CPU?</summary><b>Answer</b>: The CPU is the "brain" of the computer.&nbsp;
+
+<b><i>Remarks</i></b>: <ul><li>Every process on your computer is eventually handled by your CPU.&nbsp;</li><li>This includes calculations and also instructions for the other components of the compute.</li></ul>
+
+</details></p>
+
+<p><details><summary>Q: What's the memory (RAM)?</summary><b>Answer</b>: <ul><li>When your program runs, data gets temporarily stored in memory before getting sent to the CPU.&nbsp;</li><li>Memory is <em>ephemeral</em> storage - when your computer shuts down, the data in the memory is lost.</li></ul>
+
+</details></p>
+
+<p><details><summary>Q: What's the storage (SSD or Magnetic Disk)?</summary><b>Answer</b>: <ul><li>Storage is used for keeping data over long periods of time.&nbsp;</li><li>When a 
+program runs, the CPU will direct the memory to temporarily load data 
+from long-term storage.</li></ul>
+
+</details></p>
+
+<p><details><summary>Q: What's the Network (LAN or Internet)?</summary><b>Answer</b>: <ul><li>Network is the gateway for anything that you need that isn't stored on 
+your computer.&nbsp;</li><li>The network could connect to other computers in the same 
+room (a Local Area Network) or to a computer on the other side of the 
+world, connected over the internet.</li></ul>
+
+</details></p>
+
+<p><details><summary>Q: Rank the following hardware components in order from fastests to slowest: Memory, Disk Storage, Network, CPU.</summary><b>Answer</b>: <ol><li>CPU</li><li>Memory (RAM)</li><li>Disk Storage (SSD)</li><li>Network</li></ol>
+
+<b><i>Remarks</i></b>: CPU operations are fastest. Operations in memory (RAM) are the second 
+fastest. Then comes hard disk storage and finally transferring data 
+across a network. Keep these relative speeds in mind. They'll help you 
+understand the constraints when working with big data.
+
+</details></p>
+
+<p><details><summary>Q: What are the functions of the <b>CPU</b>?</summary><b>Answer</b>: <ul><li>It has a few different functions including directing other 
+components of a computer as well as running mathematical calculations.&nbsp;</li><li>The CPU can also store small amounts of data inside itself in what are 
+called <strong>registers</strong>.</li></ul>
+
+<b><i>Example</i></b>: <ul><li>For example, say you write a program that reads in a 40 MB data file 
+and then analyzes the file.&nbsp;</li><li>When you execute the code, the instructions 
+are loaded into the CPU.&nbsp;</li><li>The CPU then instructs the computer to take the
+ 40 MB from disk and store the data in memory (RAM).&nbsp;</li><li>If you want to sum a
+ column of data, then the CPU will essentially take two numbers at a 
+time and sum them together.&nbsp;</li><li>The accumulation of the sum needs to be 
+stored somewhere while the CPU grabs the next number. This cumulative sum will be stored in a register.&nbsp;</li><li>The registers make 
+computations more efficient: the registers avoid having to send data 
+unnecessarily back and forth between memory (RAM) and the CPU.</li></ul>
+
+</details></p>
+
+<p><details><summary>Q: What does it mean for a CPU to be 2.5 Gigahertz?</summary><b>Answer</b>: It means that the CPU processes 2.5 billion operations per second.
+
+</details></p>
+
+<p><details><summary>Q: Knowing that tweets create approximately 104 billion bytes of data per 
+day, how long would it take the 2.5 GigaHertz CPU to analyze a full day 
+of tweets?</summary><b>Answer</b>: 104 billion bytes * (1 second / 20 billion bytes) = 5.2 seconds
+
+<b><i>Remarks</i></b>: <div><ul><li>Twitter generates about 6,000 tweets per second, and each tweet 
+contains 200 bytes. So in one day, Twitter generates data on the order 
+of:</li><li>(6000 tweets / second) x (86400 seconds / day) x (200 bytes / tweet) = 104 billion bytes / day</li></ul></div>
+
+
+</details></p>
+
+<p><details><summary>Q: What are the limitations of memory (RAM)?</summary><b>Answer</b>: <ol><li>It's relatively expensive</li><li>It's ephemeral (data stored in RAM gets erased when the computer shuts down)</li></ol>
+
+<b><i>Remarks</i></b>: However, it is efficient: operations in RAM are relatively fast compared to reading and writing from disk or moving data across a network.
+
+</details></p>
+
+<p><details><summary>Q: What is <b>shuffling</b>?</summary><b>Answer</b>: Moving data back and forth between different nodes of a cluster.
+
+<b><i>Remarks</i></b>: Since this is very time expensive, Spark tries to reduce shuffling.
+
+</details></p>
+
+<p><details><summary>Q: List the key ratios of processing speed between the major hardware components.</summary><b>Answer</b>: <ol><li>CPU: 200x faster than memory</li><li>Memory: 15x faster than SSD</li><li>SSD: 20x faster than network</li></ol>
+
+</details></p>
+
+<p><details><summary>Q: What's a difference between <b>parallel computing</b> and <b>distributed computing</b>?</summary><b>Answer</b>: <ul><li>At a high level, distributed computing implies multiple CPUs each with 
+its own memory. </li><li>Parallel computing uses multiple CPUs sharing the same 
+memory.</li></ul>
+
+</details></p>
+
+<p><details><summary>Q: What are the four components of <b>Hadoop</b>?</summary><b>Answer</b>: <ol><li><div><a href="https://hadoop.apache.org/">Hadoop</a> -<br> an ecosystem of tools for big data storage and data analysis. Hadoop is<br> an older system than Spark but is still used by many companies.&nbsp;</div><br></li><br><li><div><strong>Hadoop MapReduce</strong> - a system for processing and analyzing large data sets in parallel. </div><br></li><br><li><div><strong>Hadoop YARN</strong> - a resource manager that schedules <br>jobs across a cluster. The manager keeps track of what computer <br>resources are available and then assigns those resources to specific <br>tasks.</div><br></li><br><li><div><strong>Hadoop Distributed File System (HDFS)</strong> - a big data storage system that splits data into chunks and stores the chunks across a cluster of computers.&nbsp;</div><br></li></ol>
+
+<b><i>Remarks</i></b>: The major difference between Spark and Hadoop is how they use memory. Hadoop writes intermediate results to disk whereas Spark tries to keep data in memory whenever possible. This makes Spark faster for many use cases.
+
+</details></p>
+
+<p><details><summary>Q: How does Spark differ from Hadoop?</summary><b>Answer</b>: <ol><li>Spark is generally faster than Hadoop. This is because Hadoop writes 
+intermediate results to disk whereas Spark tries to keep intermediate 
+results in memory whenever possible.</li><li>The Hadoop ecosystem includes a distributed file storage system called 
+HDFS (Hadoop Distributed File System). Spark, on the other hand, does 
+not include a file storage system. You can use Spark on top of HDFS but 
+you do not have to. Spark can read in data from other sources as well 
+such as Amazon S3.<br></li></ol>
+
+</details></p>
+
+<p><details><summary>Q: What is MapReduce?</summary><b>Answer</b>: MapReduce is a programming technique for manipulating large data sets.
+
+<b><i>Remarks</i></b>: &nbsp;"Hadoop MapReduce" is a specific implementation of this programming technique.
+
+</details></p>
+
+<p><details><summary>Q: How does MapReduce work?</summary><b>Answer</b>: <ul><li>The technique works by first dividing up a large dataset and 
+distributing the data across a cluster.&nbsp;</li><li>In the <b>map step</b>, each data is 
+analyzed and converted into a <b>(key, value) pair</b>.&nbsp;</li><li>Then these key-value 
+pairs are <b>shuffled</b> across the cluster so that all keys are on the same 
+machine.&nbsp;</li><li>In the <b>reduce step</b>, the values with the same keys are combined 
+together.</li></ul>
+
+</details></p>
+
+<p><details><summary>Q: What happens in the shuffle step of MapReduce?</summary><b>Answer</b>: <ul><li>The shuffle step finds all of the data across the clusters that have the
+ same key. </li><li>And all of those data points with that key are brought into 
+the same network node for further analysis.</li></ul>
+
+</details></p>
+
+<p><details><summary>Q: What are the four modes to set up Spark?</summary><b>Answer</b>: <ol><li>Local</li><li>Spark standalone</li><li>YARN</li><li>Mesos</li></ol>
+
+</details></p>
+
+<h4 id="module-5">Module 5<a class="headerlink" href="#module-5" title="Permanent link">&para;</a></h4>
+<h5 id="introduction-to-data-lakes">Introduction To Data Lakes<a class="headerlink" href="#introduction-to-data-lakes" title="Permanent link">&para;</a></h5>
+<p><details><summary>Q: List differences between <b>Data Warehouses</b>&nbsp;and <b>Data Lakes</b></summary><b>Answer</b>: <ol><li><b>Data form</b>: tabular <b>vs.</b> all formats</li><li><b>Data value</b>: high only <b>vs.</b> high- or medium-value, or to be discoverd</li><li><b>Ingestion</b>: ETL <b>vs.</b> ELT</li><li><b>Data model</b>: Star &amp; Snowflake with conformed dimensions or data-marts and OLAP cubes<b> vs. </b>Star &amp; Snowflakes and OLAP are also possible but other ad-hoc represenations are possible</li><li><b>Schema</b>: Known before ingestion (schema-on-write) <b>vs.</b> On-the-fly at the time of analysis (schema-on-read)</li><li><b>Technology</b>: Expensive MPP databases with expensive disks and connectivity <b>vs. </b>Commodity hardware with parallelism as first principle.</li><li><b>Data Quality</b>: High with effort for consistency and clear rules for accessibility <b>vs.</b> mixed, some data remain in raw format, some data is transformed to higher quality</li><li><b>Users</b>: Busines analysts<b> vs.</b> Data scientists, business analysts &amp; ML engineers</li><li><b>Analytics</b>: Reports and business intelligence visualizations <b>vs.</b> Machine Learning, graph analytics and data exploration.</li></ol>
+
+</details></p>
+
+<p><details><summary>Q: What is<b> schema-on-read</b>?</summary><b>Answer</b>: <ul><li>Schema on read refers to an innovative data analysis strategy in new data-handling tools like Hadoop and other more involved database technologies. </li><li>In schema on read, data is applied to a plan or schema as it is pulled out of a stored location, rather than as it goes in.</li></ul>
+
+</details></p>
+
+<p><details><summary>Q: Difference between <b>data warehouses</b> and <b>data lakes</b></summary><b>Answer</b>: <table width="800" height="361" cellspacing="0" cellpadding="1"> 
+         <tbody> 
+          <tr> 
+           <th>Characteristics</th> 
+           <th>Data Warehouse</th> 
+           <th>Data Lake</th> 
+          </tr> 
+          <tr> 
+           <td><b>Data</b></td> 
+           <td>Relational from transactional systems, operational databases, and line of business applications</td> 
+           <td>Non-relational and relational from IoT devices, web sites, mobile apps, social media, and corporate applications</td> 
+          </tr> 
+          <tr> 
+           <td><b>Schema</b></td> 
+           <td>Designed prior to the DW implementation (schema-on-write)</td> 
+           <td>Written at the time of analysis (schema-on-read)</td> 
+          </tr> 
+          <tr> 
+           <td><b>Price/Performance</b></td> 
+           <td>Fastest query results using higher cost storage</td> 
+           <td>Query results getting faster using low-cost storage</td> 
+          </tr> 
+          <tr> 
+           <td><b>Data Quality<br> </b></td> 
+           <td>Highly curated data that serves as the central version of the truth</td> 
+           <td>Any data that may or may not be curated (ie. raw data)<br> </td> 
+          </tr> 
+          <tr> 
+           <td><b>Users</b></td> 
+           <td>Business analysts</td> 
+           <td>Data scientists, Data developers, and Business analysts (using curated data)</td> 
+          </tr> 
+          <tr> 
+           <td><b>Analytics</b></td> 
+           <td>Batch reporting, BI and visualizations</td> 
+           <td>Machine Learning, Predictive analytics, data discovery and profiling<br> </td> 
+          </tr> 
+         </tbody> 
+        </table>
+
+</details></p>
+
+<p><details><summary>Q: What is a <b>data lake</b>?</summary><b>Answer</b>: <ul><li>A data lake is a centralized repository that allows you to store all 
+your structured and unstructured data at any scale. </li><li>You can store your 
+data as-is, without having to first structure the data, and run 
+different types of analytics—from dashboards and visualizations to big 
+data processing, real-time analytics, and machine learning to guide 
+better decisions.</li></ul>
+
+<b><i>Example</i></b>: <img src="images/AWS_Analytics_2021_LakeHouse.337c5d294eae24fe954c1d2e93fcda03233dfba4.png">
+
+</details></p>
+
+<p><details><summary>Q: Describe the <b>bottled water vs. data lake analogy</b></summary><b>Answer</b>: <ul><li>A data warehouse is like a producer of water where you are handed bottled water in a particular size and shape</li><li>In contrast, a data lake is a lake where many water streams flow into it and everyone is free to choose the water in the way they want to.</li></ul>
+
+</details></p>
+
+<p><details><summary>Q: What are issues of <b>data lakes</b>?</summary><b>Answer</b>: Data lakes are prone to being a chaotic <b>data garbage dump</b> ("Datensumpf). To prevent this, detailed metadata (e.g. a data catalog) should be put in place.
+
+</details></p>
+
+<h2 id="acronyms">Acronyms<a class="headerlink" href="#acronyms" title="Permanent link">&para;</a></h2>
+<p><abbr title="Resilient Distributed Dataset">RDD</abbr>: Resilient Distributed Dataset <a href="https://en.wikipedia.org/wiki/Apache_Spark"><img border="0" alt="Wiki link" src="images/Black_W_for_promotion.png" width="30" height="30"></a></p>
+<p><abbr title="Java Virtual Machine">JVM</abbr>: Java Virtual Machine <a href="https://en.wikipedia.org/wiki/Java_virtual_machine"><img border="0" alt="Wiki link" src="images/Black_W_for_promotion.png" width="30" height="30"></a></p>
+<p><abbr title="Central Processing Unit">CPU</abbr>: Central Processing Unit <a href="https://en.wikipedia.org/wiki/Central_processing_unit"><img border="0" alt="Wiki link" src="images/Black_W_for_promotion.png" width="30" height="30"></a></p>
+<p><abbr title="Random Access Memory">RAM</abbr>: Random Access Memory <a href="https://en.wikipedia.org/wiki/Random-access_memory"><img border="0" alt="Wiki link" src="images/Black_W_for_promotion.png" width="30" height="30"></a></p>
+<p><abbr title="Solid State Drive">SSD</abbr>: Solid State Drive <a href="https://en.wikipedia.org/wiki/Solid-state_drive"><img border="0" alt="Wiki link" src="images/Black_W_for_promotion.png" width="30" height="30"></a></p>
+<p><abbr title="Local Area Network">LAN</abbr>: Local Area Network <a href="https://en.wikipedia.org/wiki/Local_area_network"><img border="0" alt="Wiki link" src="images/Black_W_for_promotion.png" width="30" height="30"></a></p>
+<p><abbr title="Hadoop Distributed File System">HDFS</abbr>: Hadoop Distributed File System <a href="https://en.wikipedia.org/wiki/Apache_Hadoop"><img border="0" alt="Wiki link" src="images/Black_W_for_promotion.png" width="30" height="30"></a></p>
+
+              
+            </article>
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    <nav class="md-footer__inner md-grid" aria-label="Footer">
+      
+        
+        <a href="data_engineering_nanodegree_-_part_2_-_cloud_data_warehouses.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Data Engineering Nanodegree - Part 2 - Cloud Data Warehouses" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Data Engineering Nanodegree - Part 2 - Cloud Data Warehouses
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="data_engineering_nanodegree_-_part_4_-_data_pipelines_with_airflow.html" class="md-footer__link md-footer__link--next" aria-label="Next: Data Engineering Nanodegree - Part 4 - Data Pipelines With Airflow" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Data Engineering Nanodegree - Part 4 - Data Pipelines With Airflow
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+      
+      
+    
+    <a href="https://www.github.com/pwenker" target="_blank" rel="noopener" title="www.github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+    </a>
+  
+    
+    
+      
+      
+    
+    <a href="https://www.twitter.com/PascalWenker" target="_blank" rel="noopener" title="www.twitter.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg>
+    </a>
+  
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/in/pascal-wenker/" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3zM135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5zm282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9V416z"/></svg>
+    </a>
+  
+    
+    
+      
+      
+    
+    <a href="https://www.youtube.com/channel/UCYxDcdFLW-AMoHEfh7pG-oA" target="_blank" rel="noopener" title="www.youtube.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><path d="M549.655 124.083c-6.281-23.65-24.787-42.276-48.284-48.597C458.781 64 288 64 288 64S117.22 64 74.629 75.486c-23.497 6.322-42.003 24.947-48.284 48.597-11.412 42.867-11.412 132.305-11.412 132.305s0 89.438 11.412 132.305c6.281 23.65 24.787 41.5 48.284 47.821C117.22 448 288 448 288 448s170.78 0 213.371-11.486c23.497-6.321 42.003-24.171 48.284-47.821 11.412-42.867 11.412-132.305 11.412-132.305s0-89.438-11.412-132.305zm-317.51 213.508V175.185l142.739 81.205-142.739 81.201z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "..", "features": [], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.cefbb252.min.js"}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.17f42bbf.min.js"></script>
+      
+    
+  </body>
+</html>
