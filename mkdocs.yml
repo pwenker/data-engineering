@@ -1,0 +1,50 @@
+site_name: Data Engineering
+site_url: "https://pwenker.com/data-engineering/"
+site_description: Resource collection and personal learning roadmap for Data Engineering
+use_directory_urls: false
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to light mode
+  icon:
+    repo: fontawesome/brands/github-alt
+
+repo_name: pwenker/data-engineering
+repo_url: https://github.com/pwenker/data-engineering
+
+extra:
+  social:
+  - icon: fontawesome/brands/github
+    link: "https://www.github.com/pwenker"
+  - icon: fontawesome/brands/twitter
+    link: "https://www.twitter.com/PascalWenker"
+  - icon: fontawesome/brands/linkedin
+    link: "https://www.linkedin.com/in/pascal-wenker/"
+  - icon: fontawesome/brands/youtube
+    link: "https://www.youtube.com/channel/UCYxDcdFLW-AMoHEfh7pG-oA"
+  disqus: "www-pwenker-com"
+
+markdown_extensions:
+    - toc:
+        permalink: true
+    - markdown.extensions.codehilite:
+        guess_lang: false
+    - admonition
+    - codehilite
+    - extra
+    - pymdownx.superfences
+    - pymdownx.emoji:
+        emoji_index: !!python/name:materialx.emoji.twemoji
+        emoji_generator: !!python/name:materialx.emoji.to_svg
+    - pymdownx.tasklist:
+        custom_checkbox: true
+    - abbr
+    - pymdownx.snippets
