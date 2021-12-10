@@ -20,12 +20,3 @@
   quality of my written answers :sweat_smile:, the mere exposure and deliberate retrieval practice will help you consolidate your knowledge :exploding_head:
 - Have fun!  :partying_face:
 
-## Table of Contents
-
-### Knowledge 
-
-
-Table of Contents
-=================
-
-
